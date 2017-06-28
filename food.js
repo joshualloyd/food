@@ -1,5 +1,6 @@
+// DOGFOOD SECTION
+
 let dogFoodContainerDiv = document.getElementById('dog-food');
-let dogFoodData;
 
 let dogFoodLoad = new XMLHttpRequest();
 
@@ -42,7 +43,7 @@ function outputDogFood(data) {
 			dogBrandSection.appendChild(dogfoodTypeSection);
 			// console.log(dogfoodTypeSection);
 			type.volumes.forEach(function(volume){
-				console.log(volume);
+				// console.log(volume);
 				let dogfoodVolume = document.createElement('p');
 				dogfoodVolume.innerHTML = `Quantity: ${volume.name} / Price: $${volume.price}`;
 				dogfoodTypeSection.appendChild(dogfoodVolume);
@@ -51,8 +52,74 @@ function outputDogFood(data) {
 	});
 }
 
-function outputDogFoodTypeSections() {
-	// data.dog_brands.
+// CATFOOD SECTION
+
+let catFoodContainerDiv = document.getElementById('cat-food');
+
+let catFoodLoad = new XMLHttpRequest();
+
+function catFoodLoadHandler() {
+	var data = JSON.parse(event.target.responseText);
+	console.log(data);
+	outputCatFood(data);
+	// outputDogFoodTypeSections(data);
 }
+
+function catFoodLoadErrorHandler() {
+	console.log('there was an error loading the JSON');
+}
+
+catFoodLoad.addEventListener('load', catFoodLoadHandler);
+catFoodLoad.addEventListener('error', catFoodLoadErrorHandler);
+
+catFoodLoad.open('GET', 'catfood.json');
+
+catFoodLoad.send();
+
+function outputCatFood(data) {
+	// console.log(data);
+	data.cat_brands.forEach(function(brand) {
+		// console.log(brand);
+		let catBrandSection = document.createElement('section');
+		catBrandSection.className = 'brand';
+		catBrandSection.id = brand.name;
+		catBrandSection.innerHTML = `Brand: ${brand.name}`;
+		catFoodContainerDiv.appendChild(catBrandSection);
+		// console.log(catBrandSection);
+		// console.log(brand.types);
+		let catBreedSection = document.createElement('section');
+		catBreedSection.className = 'breed';
+		catBreedSection.innerHTML = 'Breeds';
+		catBrandSection.appendChild(catBreedSection);
+		brand.breeds.forEach(function(breed){
+			let catBreed = document.createElement('p');
+			catBreed.innerHTML = breed;
+			catBreedSection.appendChild(catBreed);
+		});
+		brand.types.forEach(function(type) {
+			// console.log(type);
+			let catfoodTypeSection = document.createElement('section');
+			// console.log(type.type)
+			catfoodTypeSection.className = 'type';
+			catfoodTypeSection.id = type.type;
+			catfoodTypeSection.innerHTML = `Type: ${type.type}`;
+			catBrandSection.appendChild(catfoodTypeSection);
+			// console.log(dogfoodTypeSection);
+			type.volumes.forEach(function(volume){
+				// console.log(volume);
+				let catfoodVolume = document.createElement('p');
+				catfoodVolume.innerHTML = `Quantity: ${volume.name} / Price: $${volume.price}`;
+				catfoodTypeSection.appendChild(catfoodVolume);
+			});
+		});
+	});
+}
+
+
+
+
+
+
+
 
 
